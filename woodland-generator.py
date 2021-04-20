@@ -2,14 +2,8 @@
 '''This module generates a woodland as per the rules in the Root RPG'''
 import random
 import pyinputplus as pyip
-
-def roll(dice):
-    '''rolls nd6 and returns the sum of their faces'''
-    result = 0
-    for die in range(dice):
-        result += random.randint(1, 6)
-    return result
-
+from clearings import Clearing
+import rollers
 
 def selectFactions():
     '''asks the user to select factions for the woodland generator'''
@@ -30,31 +24,19 @@ def selectFactions():
     print('You have selected:', selectedFactions)
     return selectedFactions
 
-clearingNames = ['Patchwood', 'Underleaf', 'Ironvein', 'Clutcher’s Creek', 'Pinehorn', 
-                'Sundell', 'Rooston', 'Milltown', 'Oakenhold', 'Limberly', 'Allaburrow', 'Blackpaw’s Dam', 
-                'Flathome', 'Tonnery', 'Firehollow', 'Opensky Haven', 'Icetrap', 'Windgap Refuge']
 
-class Clearing:
-    def __init__(self, name, paths):
-        self.name = name 
-        self.paths = paths
-        self.dominantCommunity = ''
-        self.dominantFaction = ''
 
-    def __str__(self):
-        return f"{self.name}, {self.paths} paths, populated by {self.dominantCommunity}, controlled by {self.dominantFaction}."
-
-def rollPathNum():
-    my_dict = { k:v for k,v in zip(range(2, 13),[1, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5]) }
-    return my_dict[roll(2)]
 
 def woodlandGenerator():
     '''Takes a list of factions and generates the woodland'''
     factions = selectFactions()
+    clearingNames = ['Patchwood', 'Underleaf', 'Ironvein', 'Clutcher’s Creek', 'Pinehorn', 
+                    'Sundell', 'Rooston', 'Milltown', 'Oakenhold', 'Limberly', 'Allaburrow', 'Blackpaw’s Dam', 
+                    'Flathome', 'Tonnery', 'Firehollow', 'Opensky Haven', 'Icetrap', 'Windgap Refuge']
     clearings = []
     for i in range(1, 13):
         name = random.choice(clearingNames)
-        newClearing = Clearing(name, rollPathNum())
+        newClearing = Clearing(name, rollers.rollPathNum())
         clearingNames.remove(name)
         clearings.append(newClearing)
 
